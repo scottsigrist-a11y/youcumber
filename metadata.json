@@ -1,0 +1,6 @@
+{
+  "name": "You-Cumber",
+  "description": "Fun, colorful smart glasses app that accurately measures cucumbers with swipe gestures, bottom-locked upward growth, real-time 1-decimal dimension readout, and optical FOV scale estimation.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
