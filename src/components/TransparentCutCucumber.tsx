@@ -142,10 +142,10 @@ export function TransparentCutCucumber({
         {/* Detailed Cut Cross-Section Slice Disc at the Bottom */}
         <div
           id="cucumber-cut-bottom-face"
-          className="absolute -bottom-2 left-1/2 -translate-x-1/2 pointer-events-none"
+          className="absolute bottom-0 left-1/2 -translate-x-1/2 pointer-events-none"
           style={{
             width: `${Math.max(widthPx * 0.96, 24)}px`,
-            height: `${Math.min(widthPx * 0.45, 42)}px`,
+            height: `${Math.min(widthPx * 0.35, 75)}px`,
           }}
         >
           {/* 3D Cut Cucumber Base Showing Juicy Flesh and Seeds */}

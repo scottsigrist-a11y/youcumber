@@ -1,14 +1,5 @@
 import { useState } from 'react';
-import {
-  Maximize2,
-  Minimize2,
-  Camera,
-  Info,
-  Sliders,
-  RotateCcw,
-  Volume2,
-  VolumeX,
-} from 'lucide-react';
+import { Info } from 'lucide-react';
 import { DisplayColorMode } from '../types';
 import { identifyCucumberType } from '../utils/opticalScale';
 
@@ -16,32 +7,23 @@ interface MetaRayBanHUDProps {
   lengthInches: number;
   widthInches: number;
   workingDistanceInches: number;
-  displayMode: DisplayColorMode;
-  onDisplayModeChange: (mode: DisplayColorMode) => void;
-  showCalipers: boolean;
-  onToggleCalipers: () => void;
-  onReset: () => void;
-  onOpenScaleModal: () => void;
-  cameraActive: boolean;
-  onToggleCamera: () => void;
-  soundEnabled: boolean;
-  onToggleSound: () => void;
+  displayMode?: DisplayColorMode;
+  onDisplayModeChange?: (mode: DisplayColorMode) => void;
+  showCalipers?: boolean;
+  onToggleCalipers?: () => void;
+  onReset?: () => void;
+  onOpenScaleModal?: () => void;
+  cameraActive?: boolean;
+  onToggleCamera?: () => void;
+  soundEnabled?: boolean;
+  onToggleSound?: () => void;
 }
 
 export function MetaRayBanHUD({
   lengthInches,
   widthInches,
   workingDistanceInches,
-  displayMode,
-  onDisplayModeChange,
-  showCalipers,
-  onToggleCalipers,
-  onReset,
-  onOpenScaleModal,
-  cameraActive,
-  onToggleCamera,
-  soundEnabled,
-  onToggleSound,
+  displayMode = 'waveguide-green',
 }: MetaRayBanHUDProps) {
   const [showUnitCm, setShowUnitCm] = useState(false);
   const cucumberType = identifyCucumberType(lengthInches, widthInches);
@@ -62,12 +44,12 @@ export function MetaRayBanHUD({
     <div id="meta-rayban-hud-overlay" className="absolute inset-0 pointer-events-none flex flex-col justify-between p-4 sm:p-6 z-20">
       {/* Top Header Bar */}
       <div className="flex items-start justify-between w-full">
-        {/* Top-Left: You-Cumber HUD Status */}
+        {/* Top-Left: You-comber HUD Status */}
         <div className="pointer-events-auto flex items-center gap-2 backdrop-blur-md rounded-xl px-3 py-2 bg-black/60 border border-white/10 shadow-lg">
           <span className="inline-block w-2.5 h-2.5 rounded-full bg-lime-400 animate-pulse" />
           <div className="flex flex-col">
-            <span className="text-xs font-black tracking-tight bg-gradient-to-r from-sky-400 via-emerald-300 to-lime-300 bg-clip-text text-transparent font-sans">
-              You-Cumber
+            <span className="text-xs font-black tracking-tight bg-gradient-to-r from-sky-400 via-pink-400 to-lime-300 bg-clip-text text-transparent font-sans">
+              You-comber
             </span>
             <span className="text-[10px] text-slate-300 font-mono">
               Dist: {(workingDistanceInches / 12).toFixed(1)} ft ({workingDistanceInches.toFixed(1)}&quot;) &bull; {cucumberType.type.split(' ')[0]}
@@ -132,104 +114,9 @@ export function MetaRayBanHUD({
       </div>
 
       {/* Center Target Waveguide Reticle Indicator */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none opacity-30 flex items-center justify-center">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none opacity-20 flex items-center justify-center">
         <div className="w-16 h-16 border border-dashed border-white/50 rounded-full flex items-center justify-center">
           <div className="w-1 h-1 rounded-full bg-white" />
-        </div>
-      </div>
-
-      {/* Bottom HUD Controls & Status Bar */}
-      <div className="flex items-end justify-between w-full gap-2">
-        {/* Bottom-Left: Quick Controls */}
-        <div className="pointer-events-auto flex items-center gap-1.5 backdrop-blur-md rounded-xl p-1.5 bg-black/60 border border-white/10 shadow-lg">
-          {/* Caliper Toggle */}
-          <button
-            id="toggle-calipers-button"
-            type="button"
-            onClick={onToggleCalipers}
-            title={showCalipers ? 'Hide Calipers' : 'Show Calipers'}
-            className={`p-2 rounded-lg text-xs font-mono flex items-center gap-1 transition-colors cursor-pointer ${
-              showCalipers ? 'bg-white/20 text-white' : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            {showCalipers ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
-            <span className="hidden sm:inline">Calipers</span>
-          </button>
-
-          {/* Camera Passthrough Toggle */}
-          <button
-            id="toggle-camera-button"
-            type="button"
-            onClick={onToggleCamera}
-            title={cameraActive ? 'Disable Camera View' : 'Enable Real-World Camera Passthrough'}
-            className={`p-2 rounded-lg text-xs font-mono flex items-center gap-1 transition-colors cursor-pointer ${
-              cameraActive ? 'bg-emerald-500/30 text-emerald-300 border border-emerald-500/40' : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            <Camera className="w-4 h-4" />
-            <span className="hidden sm:inline">{cameraActive ? 'Live AR' : 'Camera'}</span>
-          </button>
-
-          {/* Optical Scale Calculation Modal Button */}
-          <button
-            id="open-scale-calc-button"
-            type="button"
-            onClick={onOpenScaleModal}
-            className="p-2 rounded-lg text-xs font-mono flex items-center gap-1.5 bg-sky-500/20 text-sky-300 border border-sky-500/30 hover:bg-sky-500/30 transition-colors cursor-pointer"
-          >
-            <Sliders className="w-4 h-4" />
-            <span>Optical Scale Math</span>
-          </button>
-
-          {/* Reset */}
-          <button
-            id="reset-dimensions-button"
-            type="button"
-            onClick={onReset}
-            title="Reset to standard cucumber (7.5 x 1.8 in)"
-            className="p-2 rounded-lg text-xs text-slate-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
-          >
-            <RotateCcw className="w-4 h-4" />
-          </button>
-
-          {/* Sound Toggle */}
-          <button
-            id="toggle-sound-button"
-            type="button"
-            onClick={onToggleSound}
-            title={soundEnabled ? 'Mute Touchpad Cues' : 'Unmute Touchpad Cues'}
-            className="p-2 rounded-lg text-xs text-slate-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
-          >
-            {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
-          </button>
-        </div>
-
-        {/* Bottom-Right: Display Tint Selector */}
-        <div className="pointer-events-auto flex items-center gap-1 backdrop-blur-md rounded-xl p-1.5 bg-black/60 border border-white/10 shadow-lg">
-          <span className="text-[10px] font-mono text-slate-400 px-1.5 hidden md:inline">HUD Color:</span>
-          {(
-            [
-              { mode: 'waveguide-green', label: 'Green', color: 'bg-emerald-500' },
-              { mode: 'waveguide-cyan', label: 'Cyan', color: 'bg-cyan-500' },
-              { mode: 'microled-amber', label: 'Amber', color: 'bg-amber-500' },
-              { mode: 'full-color-ar', label: 'Natural', color: 'bg-emerald-700' },
-            ] as const
-          ).map((item) => (
-            <button
-              key={item.mode}
-              id={`hud-mode-${item.mode}`}
-              type="button"
-              onClick={() => onDisplayModeChange(item.mode)}
-              className={`px-2 py-1 rounded text-[11px] font-mono transition-all cursor-pointer flex items-center gap-1.5 ${
-                displayMode === item.mode
-                  ? 'bg-white/20 text-white font-bold ring-1 ring-white/30'
-                  : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              <span className={`w-2 h-2 rounded-full ${item.color}`} />
-              <span className="hidden sm:inline">{item.label}</span>
-            </button>
-          ))}
         </div>
       </div>
     </div>
